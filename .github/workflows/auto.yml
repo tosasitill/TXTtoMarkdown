@@ -15,11 +15,10 @@ jobs:
         run: |
           cat text.txt | sed 's/$/  /' | sed 's/^/    /' > file.md
           echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
-
       - name: 上传至 Github Releases
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "${{ github.workspace }}/'$(cat file.md)'"
+          artifacts: "${{ github.workspace }}/file.md"
           tag: "tosastill_s_Blogs_${{ env.BUILD_TIME }}"
-          bodyFile: "$(cat file.md)"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          bodyFile: "file.md"
+          token: ${{ secrets.GITHUB_TOKEN }}"
