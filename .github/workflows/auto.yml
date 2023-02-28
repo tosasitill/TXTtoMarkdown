@@ -1,0 +1,31 @@
+name: Generate MD file from text
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  generate-md:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Read text file and generate MD file
+        run: |
+          cat text.txt | sed 's/$/  /' | sed 's/^/    /' > file.md
+
+      - name: Create Release and Upload MD file
+        uses: actions/create-release@v1.0.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ```
+            $(cat file.md)
+            ```
+          draft: false
+          prerelease: false
+        if: github.ref == 'refs/heads/main'
