@@ -14,7 +14,7 @@ jobs:
       - name: Read text file and generate MD file
         run: |
           cat text.txt | sed "s/.*/&\\n/" > file.md
-          echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
+          echo "BUILD_TIME=$(date +%Y.%m.%d_%H.%M.%S)" >> $GITHUB_ENV
           
       - name: 上传至 Github Releases
         uses: ncipollo/release-action@v1.12.0
