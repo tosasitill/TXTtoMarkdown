@@ -14,18 +14,12 @@ jobs:
       - name: Read text file and generate MD file
         run: |
           cat text.txt | sed 's/$/  /' | sed 's/^/    /' > file.md
+          echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
 
-      - name: Create Release and Upload MD file
-        uses: actions/create-release@v1.0.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 上传至 Github Releases
+        uses: ncipollo/release-action@v1.12.0
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ```
-            $(cat file.md)
-            ```
-          draft: false
-          prerelease: false
-        if: github.ref == 'refs/heads/main'
+          artifacts: "~/file.md"
+          tag: "tosastill_s_Blogs_${{ env.BUILD_TIME }}"
+          bodyFile: "${{ env.BUILD_TIME }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
