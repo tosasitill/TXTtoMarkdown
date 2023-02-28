@@ -21,5 +21,5 @@ jobs:
         with:
           artifacts: " $(cat file.md)"
           tag: "tosastill_s_Blogs_${{ env.BUILD_TIME }}"
-          bodyFile: "${{ env.BUILD_TIME }}"
+          bodyFile: "Only for tosasitill's blogs"
           token: ${{ secrets.GITHUB_TOKEN }}
